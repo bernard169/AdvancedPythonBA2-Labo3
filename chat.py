@@ -22,7 +22,8 @@ class Chat:
             '/quit': self._quit,
             '/join': self._join,
             '/send': self._send,
-            '/client': self._client
+            '/client': self._client,
+            '/whoami': self._whoami
         }
         self.__running = True
         self.__address = None
@@ -33,10 +34,11 @@ class Chat:
             command = line[:line.index(' ')]
             param = line[line.index(' ')+1:].rstrip()
             # Call the command handler
+            
             if command in handlers:
                 try:
                     handlers[command]() if param == '' else handlers[command](param)
-                except:
+                except :
                     print("Erreur lors de l'exécution de la commande.")
             else:
                 print('Command inconnue:', command)
@@ -79,14 +81,18 @@ class Chat:
             except OSError:
                 return
     
-    def _client (self):
+    def _client (self):                             #Exercice 2
         if self.__address is not None :
             print (self.__address)
             return self.__address      
         else:
-            print ('No client connected')     
-    def _whoami (self):
-        pass     
+            print ('Aucun client connecte')     
+
+    def _whoami (self):                             #Exercice 3
+        try :
+            subprocess.Popen (['whoami'])           #whoami is a preexisting command in the terminal
+        except :
+            print ('Impossible de trouver le nom de l\'utilisateur')
 
 if __name__ == '__main__':
     if len(sys.argv) == 3:
